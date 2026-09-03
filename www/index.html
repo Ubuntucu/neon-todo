@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Yapılacaklar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Old+Standard+TT:wght@400;700&family=Special+Elite&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --paper: #ffffff;
+    --paper-2: #ffffff;
+    --ink: #000000;
+    --ink-soft: #000000;
+    --ink-faint: #000000;
+    --rule: #000000;
+    --rule-light: #000000;
+    --orange: #000000;
+    --orange-bright: #000000;
+    --orange-glow: transparent;
+    --red-stamp: #000000;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    overscroll-behavior-y: contain;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: #ffffff;
+    font-family: 'Old Standard TT', Georgia, serif;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    padding: max(14px, env(safe-area-inset-top)) 12px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .app { width: 100%; max-width: 480px; overflow-x: hidden; }
+
+  /* ---- BAŞLIK ---- */
+  .masthead {
+    text-align: center;
+    border-bottom: 3px double #000000;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+  }
+
+  .masthead .kicker {
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #000000;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 30px;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #000000;
+  }
+
+  .masthead .dateline {
+    display: flex;
+    justify-content: center;
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    color: #000000;
+    font-weight: 700;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .rule-thick { border: none; border-top: 3px double #000000; margin: 4px 0 12px; opacity: 1; }
+
+  /* ---- ÜST PANEL: DAİRE + İSTATİSTİK ---- */
+  .stats-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 2px 16px;
+    margin-bottom: 6px;
+    border-bottom: 2px solid #000000;
+  }
+
+  .ring-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+  .ring-wrap svg { transform: rotate(-90deg); width: 76px; height: 76px; }
+  .ring-bg { fill: none; stroke: #e0e0e0; stroke-width: 8; }
+
+  .ring-fill {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 207.3;
+    stroke-dashoffset: 207.3;
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .ring-pct {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: #000000;
+  }
+
+  .stats-text { flex: 1; font-family: 'Special Elite', monospace; font-size: 11px; color: #000000; font-weight: 700; line-height: 1.85; min-width: 0; }
+  .stats-text .num { font-weight: 900; color: #000000; font-size: 13px; }
+  .stats-text .label { text-transform: uppercase; letter-spacing: 0.5px; color: #000000; font-weight: 700; }
+
+  /* ---- ARAMA ---- */
+  .search-row { position: relative; margin-bottom: 12px; }
+
+  #searchInput {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #000000;
+    color: #000000;
+    padding: 8px 26px 8px 2px;
+    font-size: 15px;
+    font-family: 'Old Standard TT', Georgia, serif;
+    font-weight: 700;
+    font-style: italic;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  #searchInput::placeholder { color: #000000; font-weight: 700; opacity: 0.7; }
+  #searchInput:focus { border-bottom: 2px solid #000000; }
+
+  .search-clear {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #000000;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 14px;
+    display: none;
+    padding: 6px;
+  }
+
+  /* ---- GİRİŞ ALANI ---- */
+  .input-card {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #ffffff;
+  }
+
+  .input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+
+  #taskInput, #dueInput {
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    color: #000000;
+    font-weight: 700;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-family: 'Old Standard TT', Georgia, serif;
+    outline: none;
+    transition: border-color 0.2s ease;
+    min-width: 0;
+  }
+
+  #taskInput { flex: 1; }
+  #dueInput { width: 118px; font-family: 'Special Elite', monospace; font-size: 11px; padding: 10px 8px; }
+
+  #taskInput:focus, #dueInput:focus { border-color: #000000; }
+
+  #taskInput.shake { animation: shake 0.35s ease; border-color: #000000 !important; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  .error-text { font-family: 'Special Elite', monospace; font-size: 11px; color: #000000; font-weight: 900; margin: -4px 0 10px 2px; min-height: 13px; }
+
+  .tag-picker { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+
+  .tag-chip {
+    padding: 5px 11px;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    background: #ffffff;
+    color: #000000;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tag-chip.active, .tag-chip:hover, .tag-chip:active {
+    border-color: #000000;
+    background: #000000;
+    color: #ffffff;
+  }
+
+  .priority-row { display: flex; gap: 8px; margin-bottom: 12px; }
+
+  .priority-btn {
+    flex: 1;
+    padding: 7px;
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    color: #000000;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .priority-btn.active { border-color: #000000; background: #000000; color: #ffffff; }
+
+  #addBtn {
+    width: 100%;
+    padding: 13px;
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    color: #000000;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  #addBtn:hover, #addBtn:active {
+    background: #000000;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+  #addBtn:active { transform: scale(0.98); }
+
+  /* ---- FİLTRE + SIRALAMA ---- */
+  .controls-row { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+
+  .filters { display: flex; gap: 0; flex: 1; border: 2px solid #000000; border-radius: 8px; overflow: hidden; }
+
+  .filter-btn {
+    flex: 1;
+    padding: 7px 4px;
+    background: #ffffff;
+    border: none;
+    border-right: 2px solid #000000;
+    color: #000000;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .filter-btn:last-child { border-right: none; }
+  .filter-btn.active { background: #000000; color: #ffffff; }
+
+  .sort-select {
+    padding: 7px 8px;
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    color: #000000;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    cursor: pointer;
+    outline: none;
+    max-width: 108px;
+  }
+
+  /* ---- LİSTE ---- */
+  ul#list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+
+  li.task {
+    background: #ffffff;
+    border: 1px solid transparent;
+    border-bottom: 2px solid #000000;
+    border-radius: 8px;
+    padding: 12px 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    transition: transform 0.15s ease, opacity 0.25s ease;
+    animation: fadeIn 0.3s ease;
+    cursor: grab;
+  }
+
+  li.task.dragging { opacity: 0.35; cursor: grabbing; }
+  li.task.drag-over { border-top: 3px solid #000000; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  li.task.done { opacity: 0.45; }
+  li.task.done .task-text { text-decoration: line-through; }
+
+  li.task.overdue:not(.done) .due-badge { color: #000000; border-color: #000000; font-weight: 900; }
+
+  .drag-handle {
+    color: #000000;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: grab;
+    padding: 3px 0 0;
+    user-select: none;
+    flex-shrink: 0;
+    touch-action: none;
+  }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    transition: all 0.15s ease;
+  }
+  .checkbox.checked { background: #000000; }
+  .checkbox.checked::after { content: "✓"; color: #ffffff; font-size: 13px; font-weight: bold; }
+
+  .task-body { flex: 1; min-width: 0; }
+
+  .task-text {
+    font-family: 'Old Standard TT', Georgia, serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #000000;
+    word-break: break-word;
+    cursor: text;
+    outline: none;
+    padding: 0 2px;
+    margin: 0 -2px;
+    border-radius: 4px;
+  }
+  .task-text[contenteditable="true"] { box-shadow: 0 0 0 2px #000000; }
+
+  .task-meta {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    color: #000000;
+    margin-top: 5px;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    flex-wrap: wrap;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .prio-dot { width: 7px; height: 7px; display: inline-block; flex-shrink: 0; border-radius: 50%; background: #000000; }
+
+  .due-badge, .tag-badge {
+    border: 2px solid #000000;
+    border-radius: 5px;
+    padding: 1px 6px;
+    color: #000000;
+    font-weight: 900;
+  }
+  .tag-badge { border-color: #000000; color: #000000; background: transparent; }
+
+  .subtask-progress { color: #000000; font-weight: 900; }
+
+  .actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+  .icon-btn {
+    background: transparent;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    color: #000000;
+    font-weight: 900;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+  .icon-btn:hover, .icon-btn:active { background: #000000; color: #ffffff; }
+
+  .add-sub-btn {
+    background: transparent;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    color: #000000;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 0 8px;
+    height: 28px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .add-sub-btn:hover, .add-sub-btn:active { background: #000000; color: #ffffff; }
+
+  /* ---- ALT GÖREV INLINE FORM VE SİYAH SİMBİOİK BENEK LİSTESİ ---- */
+  .subtask-input-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .subtask-input-row input {
+    flex: 1;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-family: 'Old Standard TT', Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    outline: none;
+    background: #ffffff;
+  }
+
+  .subtask-input-row button {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .subtasks-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+    padding-left: 0;
+  }
+
+  .subtask-row { display: flex; align-items: center; gap: 8px; }
+
+  .sub-bullet {
+    width: 6px;
+    height: 6px;
+    background-color: #000000;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
+  .sub-checkbox {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+  }
+  .sub-checkbox.checked { background: #000000; }
+  .sub-checkbox.checked::after { content: "✓"; color: #ffffff; font-size: 10px; }
+
+  .subtask-text { font-family: 'Old Standard TT', Georgia, serif; font-size: 13px; font-weight: 700; color: #000000; flex: 1; min-width: 0; word-break: break-word; }
+  .subtask-row.done .subtask-text { text-decoration: line-through; opacity: 0.5; }
+
+  .sub-delete { background: none; border: none; color: #000000; font-weight: 900; cursor: pointer; font-size: 11px; padding: 4px; flex-shrink: 0; }
+
+  .empty-state {
+    text-align: center;
+    color: #000000;
+    font-weight: 700;
+    padding: 36px 10px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+  }
+
+  .footer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 3px double #000000;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    color: #000000;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .footer-left { display: flex; gap: 12px; }
+
+  .clear-btn, .export-btn {
+    background: transparent;
+    border: none;
+    color: #000000;
+    font-weight: 900;
+    cursor: pointer;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-decoration: underline;
+    letter-spacing: 0.3px;
+    padding: 4px 0;
+  }
+
+  .save-indicator { color: #000000; font-weight: 900; opacity: 0; transition: opacity 0.3s ease; font-style: italic; }
+  .save-indicator.show { opacity: 1; }
+
+  .toast {
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #ffffff;
+    border: 2px solid #000000;
+    color: #000000;
+    font-weight: 900;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 100;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---- ONAY KUTUSU ---- */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+  }
+  .confirm-overlay.show { display: flex; }
+
+  .confirm-box {
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 12px;
+    padding: 20px 18px;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .confirm-box .title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 17px;
+    margin-bottom: 6px;
+    color: #000000;
+  }
+
+  .confirm-box .desc {
+    font-family: 'Old Standard TT', Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 16px;
+  }
+
+  .confirm-actions { display: flex; gap: 8px; }
+
+  .confirm-actions button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border: 2px solid #000000;
+  }
+
+  .confirm-cancel { background: #ffffff; color: #000000; }
+  .confirm-ok { background: #000000; color: #ffffff; font-weight: bold; }
+
+  input[type="date"] { color-scheme: light; }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 360px) {
+    h1 { font-size: 25px; }
+    #dueInput { width: 100px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="masthead">
+    <div class="kicker">Kişisel Günlük · Neon Baskı</div>
+    <h1>Yapılacaklar</h1>
+    <div class="dateline"><span id="todayDate">—</span></div>
+  </div>
+  <hr class="rule-thick">
+
+  <div class="stats-card">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 76 76">
+        <circle class="ring-bg" cx="38" cy="38" r="33"></circle>
+        <circle class="ring-fill" id="ringFill" cx="38" cy="38" r="33"></circle>
+      </svg>
+      <div class="ring-pct" id="pctCount">0%</div>
+    </div>
+    <div class="stats-text">
+      <div><span class="num" id="totalCount">0</span> <span class="label">Toplam görev</span></div>
+      <div><span class="num" id="doneCount">0</span> <span class="label">Tamamlanan</span></div>
+      <div><span class="num" id="pendingCount">0</span> <span class="label">Kalan</span></div>
+    </div>
+  </div>
+
+  <div class="search-row">
+    <input type="text" id="searchInput" placeholder="Görevlerde ara...">
+    <button class="search-clear" id="searchClearBtn" onclick="clearSearch()">✕</button>
+  </div>
+
+  <div class="input-card">
+    <div class="input-row">
+      <input type="text" id="taskInput" placeholder="Yeni görev ekle..." maxlength="120">
+      <input type="date" id="dueInput">
+    </div>
+    <div class="error-text" id="errorText"></div>
+
+    <div class="tag-picker" id="tagPicker">
+      <span class="tag-chip active" data-tag="Genel" onclick="setTag('Genel')">Genel</span>
+      <span class="tag-chip" data-tag="İş" onclick="setTag('İş')">İş</span>
+      <span class="tag-chip" data-tag="Kişisel" onclick="setTag('Kişisel')">Kişisel</span>
+      <span class="tag-chip" data-tag="Acil" onclick="setTag('Acil')">Acil</span>
+    </div>
+
+    <div class="priority-row">
+      <button class="priority-btn" data-p="low" onclick="setPriority('low')">Düşük</button>
+      <button class="priority-btn active" data-p="mid" onclick="setPriority('mid')">Orta</button>
+      <button class="priority-btn" data-p="high" onclick="setPriority('high')">Yüksek</button>
+    </div>
+
+    <button id="addBtn" onclick="addTask()">+ Görev Ekle</button>
+  </div>
+
+  <div class="controls-row">
+    <div class="filters">
+      <button class="filter-btn active" data-f="all" onclick="setFilter('all')">Tümü</button>
+      <button class="filter-btn" data-f="pending" onclick="setFilter('pending')">Bekleyen</button>
+      <button class="filter-btn" data-f="done" onclick="setFilter('done')">Tamam</button>
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="render()">
+      <option value="manual">Manuel</option>
+      <option value="priority">Öncelik</option>
+      <option value="due">Tarih</option>
+      <option value="alpha">A-Z</option>
+    </select>
+  </div>
+
+  <ul id="list"></ul>
+  <div id="emptyState" class="empty-state" style="display:none;">Henüz görev yok.</div>
+
+  <div class="footer-actions">
+    <div class="footer-left">
+      <button class="clear-btn" onclick="requestClearCompleted()">Tamamlananları temizle</button>
+      <button class="export-btn" onclick="exportTasks()">Dışa aktar</button>
+    </div>
+    <span class="save-indicator" id="saveIndicator">kaydedildi</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="title">Emin misiniz?</div>
+    <div class="desc" id="confirmDesc">Tamamlanan tüm görevler silinecek.</div>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick="closeConfirm(false)">Vazgeç</button>
+      <button class="confirm-ok" onclick="closeConfirm(true)">Sil</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let tasks = [];
+let currentFilter = 'all';
+let currentPriority = 'mid';
+let currentTag = 'Genel';
+let searchQuery = '';
+let draggedId = null;
+let confirmCallback = null;
+let activeSubtaskFormId = null; // Hangi görevin alt görev yazma alanının açık olduğunu tutar
+
+const STORAGE_KEY = 'neon_gazete_todo_v4';
+const RING_CIRCUMFERENCE = 2 * Math.PI * 33;
+
+function loadTasks() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    tasks = raw ? JSON.parse(raw) : [];
+    tasks.forEach(t => {
+      if (!Array.isArray(t.subtasks)) t.subtasks = [];
+      if (typeof t.order !== 'number') t.order = 0;
+      if (!t.tag) t.tag = 'Genel';
+    });
+  } catch (e) {
+    tasks = [];
+  }
+}
+
+function saveTasks() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    const ind = document.getElementById('saveIndicator');
+    ind.classList.add('show');
+    clearTimeout(saveTasks._t);
+    saveTasks._t = setTimeout(() => ind.classList.remove('show'), 1000);
+  } catch (e) {
+    showToast('Kaydetme başarısız oldu');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function askConfirm(message, onConfirm) {
+  document.getElementById('confirmDesc').textContent = message;
+  document.getElementById('confirmOverlay').classList.add('show');
+  confirmCallback = onConfirm;
+}
+
+function closeConfirm(result) {
+  document.getElementById('confirmOverlay').classList.remove('show');
+  if (result && typeof confirmCallback === 'function') {
+    confirmCallback();
+  }
+  confirmCallback = null;
+}
+
+function setPriority(p) {
+  currentPriority = p;
+  document.querySelectorAll('.priority-btn').forEach(b => b.classList.toggle('active', b.dataset.p === p));
+}
+
+function setTag(tag) {
+  currentTag = tag;
+  document.querySelectorAll('.tag-chip').forEach(c => c.classList.toggle('active', c.dataset.tag === tag));
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+  render();
+}
+
+function clearSearch() {
+  searchQuery = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClearBtn').style.display = 'none';
+  render();
+}
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  searchQuery = e.target.value.trim().toLowerCase();
+  document.getElementById('searchClearBtn').style.display = searchQuery ? 'block' : 'none';
+  render();
+});
+
+function addTask() {
+  const input = document.getElementById('taskInput');
+  const dueInput = document.getElementById('dueInput');
+  const errEl = document.getElementById('errorText');
+  const text = input.value.trim();
+
+  if (!text) {
+    errEl.textContent = 'Lütfen bir görev yaz.';
+    input.classList.add('shake');
+    setTimeout(() => input.classList.remove('shake'), 400);
+    input.focus();
+    return;
+  }
+  if (text.length > 120) {
+    errEl.textContent = 'Görev en fazla 120 karakter olabilir.';
+    return;
+  }
+  errEl.textContent = '';
+
+  const maxOrder = tasks.reduce((m, t) => Math.max(m, t.order || 0), 0);
+  tasks.unshift({
+    id: Date.now() + Math.floor(Math.random() * 1000),
+    text: text,
+    done: false,
+    priority: currentPriority,
+    tag: currentTag,
+    due: dueInput.value || null,
+    subtasks: [],
+    order: maxOrder + 1,
+    createdAt: new Date().toISOString()
+  });
+  input.value = '';
+  dueInput.value = '';
+  saveTasks();
+  render();
+  showToast('Görev eklendi');
+}
+
+function toggleSubtaskForm(taskId) {
+  if (activeSubtaskFormId === taskId) {
+    activeSubtaskFormId = null;
+  } else {
+    activeSubtaskFormId = taskId;
+  }
+  render();
+  if (activeSubtaskFormId) {
+    const input = document.getElementById(`sub-input-${taskId}`);
+    if (input) input.focus();
+  }
+}
+
+function submitSubtask(taskId) {
+  const input = document.getElementById(`sub-input-${taskId}`);
+  if (!input) return;
+  const text = input.value.trim();
+  if (text) {
+    const t = tasks.find(t => t.id === taskId);
+    if (t) {
+      t.subtasks.push({
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        text: text,
+        done: false
+      });
+      saveTasks();
+      render();
+      showToast('Alt görev eklendi');
+      // Giriş alanını açık tutup odağı koruyoruz
+      const newInput = document.getElementById(`sub-input-${taskId}`);
+      if (newInput) newInput.focus();
+    }
+  }
+}
+
+function toggleDone(id) {
+  const t = tasks.find(t => t.id === id);
+  if (t) t.done = !t.done;
+  saveTasks();
+  render();
+}
+
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  saveTasks();
+  render();
+  showToast('Görev silindi');
+}
+
+function startEdit(id, el) {
+  el.setAttribute('contenteditable', 'true');
+  el.focus();
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+
+  function finish() {
+    el.removeAttribute('contenteditable');
+    const newText = el.textContent.trim();
+    const t = tasks.find(t => t.id === id);
+    if (t && newText) {
+      t.text = newText;
+      saveTasks();
+    } else if (t) {
+      el.textContent = t.text;
+    }
+    el.removeEventListener('blur', finish);
+    el.removeEventListener('keydown', onKey);
+  }
+  function onKey(e) {
+    if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+    if (e.key === 'Escape') {
+      const t = tasks.find(t => t.id === id);
+      el.textContent = t.text;
+      el.blur();
+    }
+  }
+  el.addEventListener('blur', finish);
+  el.addEventListener('keydown', onKey);
+}
+
+function requestClearCompleted() {
+  const doneCount = tasks.filter(t => t.done).length;
+  if (doneCount === 0) {
+    showToast('Tamamlanan görev yok');
+    return;
+  }
+  askConfirm(`${doneCount} tamamlanan görev silinecek. Bu işlem geri alınamaz.`, function() {
+    tasks = tasks.filter(t => !t.done);
+    saveTasks();
+    render();
+    showToast('Tamamlananlar temizlendi');
+  });
+}
+
+function exportTasks() {
+  if (tasks.length === 0) { showToast('Aktarılacak görev yok'); return; }
+  const lines = tasks.map(t => {
+    const box = t.done ? '[x]' : '[ ]';
+    const due = t.due ? ` (son: ${t.due})` : '';
+    const sub = t.subtasks.length ? '\n' + t.subtasks.map(s => '   - ' + (s.done ? '[x] ' : '[ ] ') + s.text).join('\n') : '';
+    return `${box} ${t.text}${due}${sub}`;
+  });
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'yapilacaklar.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Liste dışa aktarıldı');
+}
+
+function toggleSubtask(taskId, subId) {
+  const t = tasks.find(t => t.id === taskId);
+  if (!t) return;
+  const s = t.subtasks.find(s => s.id === subId);
+  if (s) s.done = !s.done;
+  saveTasks();
+  render();
+}
+
+function deleteSubtask(taskId, subId) {
+  const t = tasks.find(t => t.id === taskId);
+  if (!t) return;
+  t.subtasks = t.subtasks.filter(s => s.id !== subId);
+  saveTasks();
+  render();
+}
+
+function prioLabel(p) { return p === 'low' ? 'Düşük' : p === 'high' ? 'Yüksek' : 'Orta'; }
+function prioWeight(p) { return p === 'high' ? 0 : p === 'mid' ? 1 : 2; }
+
+function formatDate(d) {
+  if (!d) return null;
+  const date = new Date(d + 'T00:00:00');
+  return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+}
+
+function isOverdue(d) {
+  if (!d) return false;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const due = new Date(d + 'T00:00:00');
+  return due < today;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ---- SÜRÜKLE-BIRAK (masaüstü) ---- */
+function onDragStart(e, id) {
+  draggedId = id;
+  e.currentTarget.classList.add('dragging');
+}
+function onDragEnd(e) {
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+function onDragOver(e, id) {
+  e.preventDefault();
+  if (id !== draggedId) e.currentTarget.classList.add('drag-over');
+}
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+function onDrop(e, targetId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  reorderTasks(draggedId, targetId);
+  draggedId = null;
+}
+
+function reorderTasks(fromId, targetId) {
+  if (fromId === null || fromId === targetId) return;
+  const sorted = [...tasks].sort((a, b) => (b.order || 0) - (a.order || 0));
+  const fromIdx = sorted.findIndex(t => t.id === fromId);
+  const toIdx = sorted.findIndex(t => t.id === targetId);
+  if (fromIdx === -1 || toIdx === -1) return;
+
+  const [moved] = sorted.splice(fromIdx, 1);
+  sorted.splice(toIdx, 0, moved);
+  sorted.forEach((t, i) => { t.order = sorted.length - i; });
+
+  saveTasks();
+  render();
+}
+
+/* ---- SÜRÜKLE-BIRAK (dokunmatik) ---- */
+let touchDragId = null;
+let touchStartY = 0;
+let touchCurrentLi = null;
+
+function onTouchStart(e, id) {
+  touchDragId = id;
+  touchStartY = e.touches[0].clientY;
+  touchCurrentLi = e.currentTarget;
+  touchCurrentLi.classList.add('dragging');
+}
+function onTouchMove(e) {
+  if (touchDragId === null) return;
+  const touch = e.touches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  const li = el ? el.closest('li.task') : null;
+  document.querySelectorAll('.drag-over').forEach(el2 => el2.classList.remove('drag-over'));
+  if (li && li !== touchCurrentLi) li.classList.add('drag-over');
+}
+function onTouchEnd(e) {
+  if (touchDragId === null) return;
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  const li = el ? el.closest('li.task') : null;
+  document.querySelectorAll('.drag-over').forEach(el2 => el2.classList.remove('drag-over'));
+  if (touchCurrentLi) touchCurrentLi.classList.remove('dragging');
+  if (li && li.id) {
+    const targetId = Number(li.id.replace('task-', ''));
+    reorderTasks(touchDragId, targetId);
+  }
+  touchDragId = null;
+  touchCurrentLi = null;
+}
+
+function getVisibleTasks() {
+  let filtered = tasks;
+  if (currentFilter === 'pending') filtered = filtered.filter(t => !t.done);
+  if (currentFilter === 'done') filtered = filtered.filter(t => t.done);
+  if (searchQuery) {
+    filtered = filtered.filter(t =>
+      t.text.toLowerCase().includes(searchQuery) ||
+      (t.tag && t.tag.toLowerCase().includes(searchQuery)) ||
+      t.subtasks.some(s => s.text.toLowerCase().includes(searchQuery))
+    );
+  }
+
+  const sortMode = document.getElementById('sortSelect').value;
+  filtered = [...filtered];
+  if (sortMode === 'priority') {
+    filtered.sort((a, b) => prioWeight(a.priority) - prioWeight(b.priority) || (b.order - a.order));
+  } else if (sortMode === 'due') {
+    filtered.sort((a, b) => {
+      if (!a.due && !b.due) return b.order - a.order;
+      if (!a.due) return 1;
+      if (!b.due) return -1;
+      return new Date(a.due) - new Date(b.due);
+    });
+  } else if (sortMode === 'alpha') {
+    filtered.sort((a, b) => a.text.localeCompare(b.text, 'tr'));
+  } else {
+    filtered.sort((a, b) => (b.order || 0) - (a.order || 0));
+  }
+  return filtered;
+}
+
+function updateRing(pct) {
+  const ring = document.getElementById('ringFill');
+  const offset = RING_CIRCUMFERENCE - (RING_CIRCUMFERENCE * pct / 100);
+  ring.style.strokeDashoffset = offset;
+}
+
+function render() {
+  const list = document.getElementById('list');
+  const empty = document.getElementById('emptyState');
+  const filtered = getVisibleTasks();
+
+  list.innerHTML = '';
+  if (filtered.length === 0) {
+    empty.style.display = 'block';
+    empty.textContent = tasks.length === 0 ? 'Henüz görev yok.' : 'Arama/filtre için sonuç bulunamadı.';
+  } else {
+    empty.style.display = 'none';
+    filtered.forEach(t => {
+      const li = document.createElement('li');
+      li.className = 'task' + (t.done ? ' done' : '') + (isOverdue(t.due) && !t.done ? ' overdue' : '');
+      li.dataset.priority = t.priority;
+      li.draggable = true;
+      li.id = 'task-' + t.id;
+
+      li.addEventListener('dragstart', (e) => onDragStart(e, t.id));
+      li.addEventListener('dragend', onDragEnd);
+      li.addEventListener('dragover', (e) => onDragOver(e, t.id));
+      li.addEventListener('dragleave', onDragLeave);
+      li.addEventListener('drop', (e) => onDrop(e, t.id));
+
+      const dueStr = formatDate(t.due);
+      const doneSubs = t.subtasks.filter(s => s.done).length;
+      const subProgress = t.subtasks.length ? `<span class="subtask-progress">· ${doneSubs}/${t.subtasks.length} alt görev</span>` : '';
+
+      const subtasksHtml = t.subtasks.length > 0 ? `
+        <div class="subtasks-wrap" id="sub-wrap-${t.id}">
+          ${t.subtasks.map(s => `
+            <div class="subtask-row ${s.done ? 'done' : ''}">
+              <span class="sub-bullet"></span>
+              <div class="sub-checkbox ${s.done ? 'checked' : ''}" data-sub-toggle="${s.id}"></div>
+              <span class="subtask-text">${escapeHtml(s.text)}</span>
+              <button class="sub-delete" data-sub-delete="${s.id}" aria-label="Alt görevi sil">✕</button>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+
+      const isSubFormOpen = activeSubtaskFormId === t.id;
+      const subFormHtml = isSubFormOpen ? `
+        <div class="subtask-input-row">
+          <input type="text" id="sub-input-${t.id}" placeholder="Alt görev başlığı..." maxlength="100">
+          <button type="button" onclick="submitSubtask(${t.id})">Ekle</button>
+        </div>
+      ` : '';
+
+      li.innerHTML = `
+        <span class="drag-handle" title="Sürükle">⠿</span>
+        <div class="checkbox ${t.done ? 'checked' : ''}" role="checkbox" aria-checked="${t.done}" aria-label="Tamamlandı olarak işaretle"></div>
+        <div class="task-body">
+          <div class="task-text" tabindex="0">${escapeHtml(t.text)}</div>
+          ${subtasksHtml}
+          ${subFormHtml}
+          <div class="task-meta">
+            <span class="prio-dot ${t.priority}"></span>
+            <span>${prioLabel(t.priority)}</span>
+            <span class="tag-badge">${escapeHtml(t.tag)}</span>
+            ${dueStr ? `<span class="due-badge">${dueStr}</span>` : ''}
+            ${subProgress}
+          </div>
+        </div>
+        <div class="actions">
+          <button class="add-sub-btn" data-add-sub aria-label="Alt Görev Ekle">+ Alt Görev</button>
+          <button class="icon-btn delete" data-delete aria-label="Sil">✕</button>
+        </div>
+      `;
+
+      const dragHandle = li.querySelector('.drag-handle');
+      dragHandle.addEventListener('touchstart', (e) => onTouchStart(e, t.id), { passive: true });
+      dragHandle.addEventListener('touchmove', onTouchMove, { passive: true });
+      dragHandle.addEventListener('touchend', onTouchEnd);
+
+      li.querySelector('.checkbox').addEventListener('click', () => toggleDone(t.id));
+      li.querySelector('.task-text').addEventListener('click', function() { startEdit(t.id, this); });
+      li.querySelector('[data-add-sub]').addEventListener('click', () => toggleSubtaskForm(t.id));
+      li.querySelector('[data-delete]').addEventListener('click', () => deleteTask(t.id));
+
+      if (isSubFormOpen) {
+        const subInput = li.querySelector(`#sub-input-${t.id}`);
+        if (subInput) {
+          subInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              submitSubtask(t.id);
+            }
+          });
+        }
+      }
+
+      li.querySelectorAll('[data-sub-toggle]').forEach(el => {
+        el.addEventListener('click', () => toggleSubtask(t.id, Number(el.dataset.subToggle)));
+      });
+      li.querySelectorAll('[data-sub-delete]').forEach(el => {
+        el.addEventListener('click', () => deleteSubtask(t.id, Number(el.dataset.subDelete)));
+      });
+
+      list.appendChild(li);
+    });
+  }
+
+  const total = tasks.length;
+  const done = tasks.filter(t => t.done).length;
+  const pending = total - done;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('pendingCount').textContent = pending;
+  document.getElementById('pctCount').textContent = pct + '%';
+  updateRing(pct);
+}
+
+function setDateline() {
+  const now = new Date();
+  const str = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' });
+  document.getElementById('todayDate').textContent = str;
+}
+
+document.getElementById('taskInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addTask();
+});
+document.getElementById('taskInput').addEventListener('input', function() {
+  document.getElementById('errorText').textContent = '';
+});
+
+setDateline();
+loadTasks();
+render();
+</script>
+</body>
+</html>
